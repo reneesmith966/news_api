@@ -1,7 +1,6 @@
 import requests
 from send_email import send_email
 
-time.sleep(2)
 api_key = "d9580e75f40b4ef2a08e8d0694b96850"
 
 url = (f"https://newsapi.org/v2/everything?"
