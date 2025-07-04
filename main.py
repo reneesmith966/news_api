@@ -1,10 +1,15 @@
 import requests
-import time
+from send_email import send_email
 
 time.sleep(2)
 api_key = "d9580e75f40b4ef2a08e8d0694b96850"
-url = ("https://newsapi.org/v2/everything?q=apple&from=2025-06-30&to"
-       "=2025-06-30&sortBy=popularity&apiKey=d9580e75f40b4ef2a08e8d0694b96850")
+
+url = (f"https://newsapi.org/v2/everything?"
+       "q=google"
+       "&from=2025-06-30&to=2025-06-30"
+       "&sortBy=popularity"
+       "&apiKey=d9580e75f40b4ef2a08e8d0694b96850"
+       "&language=en")
 headers = {"User-Agent": "Mozilla/5.0"}
 
 # make a request
@@ -14,7 +19,11 @@ request = requests.get(url, headers=headers)
 content = request.json() # creates request object type
 
 # display the article titles
-for article in content["articles"]:
-    print(article["title"])
-    print("\n")
-    print(article["description"])
+body = "Subject: Today's Tech News Re: Google" + "\n"
+for article in content["articles"][:5]:
+    if article["title"] is not None and article["url"] is not None:
+        body = (body + article["title"] + "\n" +  article["description"] +
+                "\n" + article["url"] + 2*"\n")
+
+body = body.encode("utf-8")
+send_email(body)
